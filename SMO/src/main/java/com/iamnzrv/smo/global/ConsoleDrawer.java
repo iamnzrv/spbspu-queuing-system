@@ -2,7 +2,7 @@ package com.iamnzrv.smo.global;
 
 import com.iamnzrv.smo.entities.bid.Bid;
 import com.iamnzrv.smo.entities.buffer.Buffer;
-import com.iamnzrv.smo.entities.devices.Device;
+import com.iamnzrv.smo.entities.device.Device;
 import com.iamnzrv.smo.entities.producer.Producer;
 
 import java.util.List;

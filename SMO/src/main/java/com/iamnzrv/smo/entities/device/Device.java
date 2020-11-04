@@ -1,4 +1,4 @@
-package com.iamnzrv.smo.entities.devices;
+package com.iamnzrv.smo.entities.device;
 
 import com.iamnzrv.smo.entities.bid.Bid;
 import com.iamnzrv.smo.events.EventManager;

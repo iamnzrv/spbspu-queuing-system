@@ -3,11 +3,11 @@ package com.iamnzrv.smo.global;
 import com.iamnzrv.smo.entities.EntityManager;
 import com.iamnzrv.smo.entities.bid.Bid;
 import com.iamnzrv.smo.entities.buffer.Buffer;
-import com.iamnzrv.smo.entities.devices.Device;
+import com.iamnzrv.smo.entities.device.Device;
 import com.iamnzrv.smo.entities.producer.Producer;
 import com.iamnzrv.smo.events.EventManager;
 
-import static com.iamnzrv.smo.entities.devices.Device.FREE;
+import static com.iamnzrv.smo.entities.device.Device.FREE;
 
 public final class GlobalManager {
   private final EntityManager entityManager;

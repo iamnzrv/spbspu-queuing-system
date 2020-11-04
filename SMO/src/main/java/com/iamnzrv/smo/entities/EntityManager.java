@@ -2,7 +2,7 @@ package com.iamnzrv.smo.entities;
 
 import com.iamnzrv.smo.entities.bid.Bid;
 import com.iamnzrv.smo.entities.buffer.Buffer;
-import com.iamnzrv.smo.entities.devices.Device;
+import com.iamnzrv.smo.entities.device.Device;
 import com.iamnzrv.smo.entities.producer.Producer;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.iamnzrv.smo.entities.devices.Device.FREE;
+import static com.iamnzrv.smo.entities.device.Device.FREE;
 
 
 public class EntityManager {
