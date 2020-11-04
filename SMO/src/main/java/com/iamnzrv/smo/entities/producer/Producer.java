@@ -26,8 +26,8 @@ public class Producer {
   }
 
   public void start() {
-    status = PRODUCING;
     new Thread(() -> {
+      status = PRODUCING;
       int max = 5000;
       int min = 1000;
       while (!isInterrupted) {
@@ -44,6 +44,7 @@ public class Producer {
           e.printStackTrace();
         }
       }
+      status = STOPPED;
     }).start();
   }
 }
