@@ -6,10 +6,11 @@ import com.iamnzrv.smo.global.GlobalManager;
 
 public class Buffer {
   private final Bid[] bids;
-  private static final int BUFFER_SIZE = 5;
+  private final int capacity;
 
-  public Buffer() {
-    bids = new Bid[BUFFER_SIZE];
+  public Buffer(int capacity) {
+    this.capacity = capacity;
+    bids = new Bid[capacity];
   }
 
   public synchronized void putBidToBuffer(Bid bid) throws BufferIsFullException {
@@ -44,7 +45,7 @@ public class Buffer {
   public Bid chooseBidFromBuffer() {
     Bid highestPriorityBid = bids[0];
     int highestPriorityBidIndex = 0;
-    for (int i = 1; i < BUFFER_SIZE; i++) {
+    for (int i = 1; i < capacity; i++) {
       if (bids[i] != null) {
         if (highestPriorityBid == null) {
           highestPriorityBid = bids[i];

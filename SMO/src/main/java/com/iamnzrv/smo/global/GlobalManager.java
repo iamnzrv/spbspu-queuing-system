@@ -18,6 +18,7 @@ public final class GlobalManager {
   private static GlobalManager instance;
 
   private GlobalManager(
+      int bufferCapacity,
       int requestsAmount,
       int producersAmount,
       int devicesAmount,
@@ -25,7 +26,7 @@ public final class GlobalManager {
       int pMin,
       double dLambda
   ) {
-    entityManager = new EntityManager();
+    entityManager = new EntityManager(bufferCapacity);
     entityManager.init(
         requestsAmount,
         producersAmount,
@@ -38,6 +39,7 @@ public final class GlobalManager {
   }
 
   public static GlobalManager init(
+      int bufferCapacity,
       int requestsAmount,
       int producersAmount,
       int devicesAmount,
@@ -47,6 +49,7 @@ public final class GlobalManager {
   ) {
     if (instance == null) {
       instance = new GlobalManager(
+          bufferCapacity,
           requestsAmount,
           producersAmount,
           devicesAmount,

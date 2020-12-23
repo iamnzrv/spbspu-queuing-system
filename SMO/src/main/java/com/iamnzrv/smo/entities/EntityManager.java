@@ -20,11 +20,11 @@ public class EntityManager {
   private final Buffer buffer;
   private int requestsAmount;
 
-  public EntityManager() {
+  public EntityManager(int bufferCapacity) {
     producerList = new ArrayList<>();
     bidList = new ArrayList<>();
     deviceList = new ArrayList<>();
-    buffer = new Buffer();
+    buffer = new Buffer(bufferCapacity);
   }
 
   public void init(

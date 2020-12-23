@@ -1,5 +1,6 @@
 package com.iamnzrv.smo.events;
 
+import com.iamnzrv.smo.entities.EntityManager;
 import com.iamnzrv.smo.entities.bid.Bid;
 import com.iamnzrv.smo.entities.device.Device;
 import com.iamnzrv.smo.entities.producer.Producer;
@@ -17,8 +18,6 @@ public class EventManager {
   public static final String GENERATED_BID = "GENERATED_BID";
   public static final String DEVICE_IS_FREE = "DEVICE_IS_FREE";
   public static final String STOP = "STOP";
-  public static int time = 0;
-
 
   public EventManager() {
     events = new ArrayList<>();
@@ -73,9 +72,10 @@ public class EventManager {
   }
 
   public synchronized void printState() {
-    System.out.println("REQUESTS: " + GlobalManager.getInstance().getEntityManager().getBidList().size() + "/" + GlobalManager.getInstance().getEntityManager().getRequestsAmount());
-    List<Producer> producerList = GlobalManager.getInstance().getEntityManager().getProducerList();
-    List<Device> deviceList = GlobalManager.getInstance().getEntityManager().getDeviceList();
+    EntityManager entityManager = GlobalManager.getInstance().getEntityManager();
+    System.out.println("REQUESTS: " + entityManager.getBidList().size() + "/" + entityManager.getRequestsAmount());
+    List<Producer> producerList = entityManager.getProducerList();
+    List<Device> deviceList = entityManager.getDeviceList();
     System.out.print("BUFFER: ");
     System.out.print(
         Arrays.toString(
