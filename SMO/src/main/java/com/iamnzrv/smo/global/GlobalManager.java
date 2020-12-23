@@ -7,6 +7,9 @@ import com.iamnzrv.smo.entities.device.Device;
 import com.iamnzrv.smo.entities.producer.Producer;
 import com.iamnzrv.smo.events.EventManager;
 
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 import static com.iamnzrv.smo.entities.device.Device.FREE;
 
 public final class GlobalManager {
@@ -14,17 +17,55 @@ public final class GlobalManager {
   private final EventManager eventManager;
   private static GlobalManager instance;
 
-  private GlobalManager(int producersAmount, int devicesAmount) {
+  private GlobalManager(
+      int requestsAmount,
+      int producersAmount,
+      int devicesAmount,
+      int pMax,
+      int pMin,
+      double dLambda
+  ) {
     entityManager = new EntityManager();
-    entityManager.init(producersAmount, devicesAmount);
+    entityManager.init(
+        requestsAmount,
+        producersAmount,
+        devicesAmount,
+        pMax,
+        pMin,
+        dLambda
+    );
     eventManager = new EventManager();
   }
 
-  public static GlobalManager init(int producersAmount, int devicesAmount) {
+  public static GlobalManager init(
+      int requestsAmount,
+      int producersAmount,
+      int devicesAmount,
+      int pMax,
+      int pMin,
+      double dLambda
+  ) {
     if (instance == null) {
-      instance = new GlobalManager(producersAmount, devicesAmount);
+      instance = new GlobalManager(
+          requestsAmount,
+          producersAmount,
+          devicesAmount,
+          pMax,
+          pMin,
+          dLambda
+      );
+      instance.launchScanner();
     }
     return getInstance();
+  }
+
+  public void launchScanner() {
+    new Thread(() -> {
+      Scanner scanner = new Scanner(new InputStreamReader(System.in));
+      scanner.nextLine();
+      GlobalManager.getInstance().getEventManager().addSystemEvent(EventManager.STOP);
+      System.exit(0);
+    }).start();
   }
 
   public static GlobalManager getInstance() {
@@ -44,9 +85,13 @@ public final class GlobalManager {
 
   public synchronized void tryToPutBidToDevice(Bid bid) {
     if (bid.getStatus().equals(Bid.GENERATED)) {
-      eventManager.addEvent(EventManager.GENERATED_BID);
+      eventManager.addProducerEvent(EventManager.GENERATED_BID, bid.getProducerIndex());
     }
     entityManager.addBid(bid);
+    if (entityManager.getBidList().size() == entityManager.getRequestsAmount()) {
+      GlobalManager.getInstance().getEventManager().addSystemEvent(EventManager.STOP);
+      System.exit(0);
+    }
     boolean foundFreeDevice = false;
     for (int i = 0; i < entityManager.getDeviceList().size(); i++) {
       Device device = entityManager.getDeviceList().get(i);
@@ -73,13 +118,17 @@ public final class GlobalManager {
     return entityManager.getProducerList().indexOf(producer);
   }
 
+  public int getDeviceIndex(Device device) {
+    return entityManager.getDeviceList().indexOf(device);
+  }
+
   private synchronized void tryToPutBidToBuffer(Bid bid) {
     try {
       entityManager.getBuffer().putBidToBuffer(bid);
       bid.setStatus(Bid.WAITING);
     } catch (Buffer.BufferIsFullException e) {
       bid.setStatus(Bid.REJECTED);
-      eventManager.addEvent(EventManager.BID_WAS_REJECTED);
+      ;
     }
   }
 }

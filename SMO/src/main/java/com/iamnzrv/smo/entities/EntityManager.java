@@ -18,6 +18,7 @@ public class EntityManager {
   private final List<Bid> bidList;
   private final List<Device> deviceList;
   private final Buffer buffer;
+  private int requestsAmount;
 
   public EntityManager() {
     producerList = new ArrayList<>();
@@ -26,15 +27,27 @@ public class EntityManager {
     buffer = new Buffer();
   }
 
-  public void init(int producersAmount, int devicesAmount) {
+  public void init(
+      int requestsAmount,
+      int producersAmount,
+      int devicesAmount,
+      int pMax,
+      int pMin,
+      double dLambda
+  ) {
+    this.requestsAmount = requestsAmount;
     for (int i = 0; i < producersAmount; i++) {
-      Producer producer = new Producer(Producer.STOPPED);
+      Producer producer = new Producer(Producer.STOPPED, pMax, pMin);
       producerList.add(producer);
     }
     for (int i = 0; i < devicesAmount; i++) {
-      Device device = new Device(FREE);
+      Device device = new Device(FREE, dLambda);
       deviceList.add(device);
     }
+  }
+
+  public int getRequestsAmount() {
+    return requestsAmount;
   }
 
   public Buffer getBuffer() {

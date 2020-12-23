@@ -24,12 +24,21 @@ public class Buffer {
     if (!foundFreePlace) throw new BufferIsFullException();
     else {
       bid.setStatus(Bid.WAITING);
-      GlobalManager.getInstance().getEventManager().addEvent(EventManager.BID_WAS_PUT_TO_BUFFER);
     }
   }
 
   public Bid[] getBids() {
     return bids;
+  }
+
+  public String[] getBidsAsStrings() {
+    String[] strings = new String[bids.length];
+    for (int i = 0; i < bids.length; i++) {
+      if (bids[i] != null) {
+        strings[i] = bids[i].toString();
+      } else strings[i] = "EMPTY";
+    }
+    return strings;
   }
 
   public Bid chooseBidFromBuffer() {

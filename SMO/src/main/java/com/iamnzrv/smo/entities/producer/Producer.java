@@ -7,14 +7,20 @@ import static com.iamnzrv.smo.entities.bid.Bid.GENERATED;
 
 public class Producer {
   private boolean isInterrupted = false;
+  private int pMax;
+  private int pMin;
+  private int bidCnt = 0;
+  private int nextSleepTime = 0;
 
   public static final String PRODUCING = "PRODUCING";
   public static final String STOPPED = "STOPPED";
 
   private String status;
 
-  public Producer(String status) {
+  public Producer(String status, int pMax, int pMin) {
     this.status = status;
+    this.pMax = pMax;
+    this.pMin = pMin;
   }
 
   public void interrupt() {
@@ -25,19 +31,25 @@ public class Producer {
     return status;
   }
 
+  public int getNextSleepTime() {
+    return nextSleepTime;
+  }
+
   public void start() {
     new Thread(() -> {
       status = PRODUCING;
-      int max = 5000;
-      int min = 1000;
       while (!isInterrupted) {
         try {
-          int sleepTime = (int) (Math.random() * ((max - min) + 1)) + min;
-          Thread.sleep(sleepTime);
+          if (nextSleepTime == 0)
+            nextSleepTime = (int) (Math.random() * ((pMax - pMin) + 1)) + pMin;
+          Thread.sleep(nextSleepTime);
+          bidCnt++;
+          nextSleepTime = (int) (Math.random() * ((pMax - pMin) + 1)) + pMin;
           GlobalManager.getInstance().tryToPutBidToDevice(
               new Bid(
                   GENERATED,
-                  GlobalManager.getInstance().getProducerIndex(this)
+                  GlobalManager.getInstance().getProducerIndex(this),
+                  bidCnt
               )
           );
         } catch (InterruptedException e) {
