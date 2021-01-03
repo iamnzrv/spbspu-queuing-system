@@ -8,6 +8,7 @@ import com.iamnzrv.smo.entities.producer.Producer;
 import com.iamnzrv.smo.events.EventManager;
 
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.Scanner;
 
 import static com.iamnzrv.smo.entities.device.Device.FREE;
@@ -15,6 +16,7 @@ import static com.iamnzrv.smo.entities.device.Device.FREE;
 public final class GlobalManager {
   private final EntityManager entityManager;
   private final EventManager eventManager;
+  private final long startTime;
   private static GlobalManager instance;
 
   private GlobalManager(
@@ -26,6 +28,7 @@ public final class GlobalManager {
       int pMin,
       double dLambda
   ) {
+    startTime = new Date().getTime();
     entityManager = new EntityManager(bufferCapacity);
     entityManager.init(
         requestsAmount,
@@ -107,6 +110,10 @@ public final class GlobalManager {
     if (!foundFreeDevice) {
       tryToPutBidToBuffer(bid);
     }
+  }
+
+  public synchronized long getStartTime() {
+    return startTime;
   }
 
   public EntityManager getEntityManager() {

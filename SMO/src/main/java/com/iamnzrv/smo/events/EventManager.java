@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class EventManager {
@@ -25,13 +26,7 @@ public class EventManager {
 
   public synchronized void addSystemEvent(String event) {
     events.add(event);
-    LocalDateTime now = LocalDateTime.now();
-    int hour = now.getHour();
-    int minute = now.getMinute();
-    int second = now.getSecond();
-    int millis = now.get(ChronoField.MILLI_OF_SECOND);
-
-    System.out.printf("SYSTEM %s %02d:%02d:%02d.%03d\n", event, hour, minute, second, millis);
+    System.out.printf("SYSTEM %s %d\n", event, new Date().getTime() - GlobalManager.getInstance().getStartTime());
     System.out.println(
         Arrays.toString(
             GlobalManager
@@ -47,26 +42,14 @@ public class EventManager {
 
   public synchronized void addProducerEvent(String event, int producerIndex) {
     events.add(event);
-    LocalDateTime now = LocalDateTime.now();
-    int hour = now.getHour();
-    int minute = now.getMinute();
-    int second = now.getSecond();
-    int millis = now.get(ChronoField.MILLI_OF_SECOND);
-
-    System.out.printf("PRODUCER_%d %s %02d:%02d:%02d.%03d\n", producerIndex, event, hour, minute, second, millis);
+    System.out.printf("PRODUCER_%d %s %d\n", producerIndex, event, new Date().getTime() - GlobalManager.getInstance().getStartTime());
     printState();
     System.out.println();
   }
 
   public synchronized void addDeviceEvent(String event, int deviceIndex) {
     events.add(event);
-    LocalDateTime now = LocalDateTime.now();
-    int hour = now.getHour();
-    int minute = now.getMinute();
-    int second = now.getSecond();
-    int millis = now.get(ChronoField.MILLI_OF_SECOND);
-
-    System.out.printf("DEVICE_%d %s %02d:%02d:%02d.%03d\n", deviceIndex, event, hour, minute, second, millis);
+    System.out.printf("DEVICE_%d %s %d\n", deviceIndex, event, new Date().getTime() - GlobalManager.getInstance().getStartTime());
     printState();
     System.out.println();
   }
