@@ -33,6 +33,8 @@ public class EntityManager {
       int devicesAmount,
       int pMax,
       int pMin,
+      int dMax,
+      int dMin,
       double dLambda
   ) {
     this.requestsAmount = requestsAmount;
@@ -41,36 +43,36 @@ public class EntityManager {
       producerList.add(producer);
     }
     for (int i = 0; i < devicesAmount; i++) {
-      Device device = new Device(FREE, dLambda);
+      Device device = new Device(FREE, dLambda, dMax, dMin);
       deviceList.add(device);
     }
   }
 
-  public int getRequestsAmount() {
+  public synchronized int getRequestsAmount() {
     return requestsAmount;
   }
 
-  public Buffer getBuffer() {
+  public synchronized Buffer getBuffer() {
     return buffer;
   }
 
-  public void addBid(Bid bid) {
+  public synchronized void addBid(Bid bid) {
     bidList.add(bid);
   }
 
-  public List<Producer> getProducerList() {
+  public synchronized List<Producer> getProducerList() {
     return Collections.unmodifiableList(producerList);
   }
 
-  public List<Device> getDeviceList() {
+  public synchronized List<Device> getDeviceList() {
     return deviceList;
   }
 
-  public List<Bid> getBidList() {
+  public synchronized List<Bid> getBidList() {
     return Collections.unmodifiableList(bidList);
   }
 
-  public List<Bid> getBidListByStatus(String status) {
+  public synchronized List<Bid> getBidListByStatus(String status) {
     return bidList
         .stream()
         .filter(bid -> bid.getStatus().equals(status))

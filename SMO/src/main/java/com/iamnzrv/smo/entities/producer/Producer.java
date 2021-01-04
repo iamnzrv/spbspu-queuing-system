@@ -23,15 +23,11 @@ public class Producer {
     this.pMin = pMin;
   }
 
-  public void interrupt() {
-    isInterrupted = true;
-  }
-
   public String getStatus() {
     return status;
   }
 
-  public int getNextSleepTime() {
+  public synchronized int getNextSleepTime() {
     return nextSleepTime;
   }
 

@@ -21,11 +21,11 @@ public class Bid {
     return producerIndex;
   }
 
-  public String getStatus() {
+  public synchronized String getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public synchronized void setStatus(String status) {
     this.status = status;
   }
 

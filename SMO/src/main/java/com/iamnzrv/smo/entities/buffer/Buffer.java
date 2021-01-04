@@ -28,11 +28,11 @@ public class Buffer {
     }
   }
 
-  public Bid[] getBids() {
+  public synchronized Bid[] getBids() {
     return bids;
   }
 
-  public String[] getBidsAsStrings() {
+  public synchronized String[] getBidsAsStrings() {
     String[] strings = new String[bids.length];
     for (int i = 0; i < bids.length; i++) {
       if (bids[i] != null) {
@@ -42,7 +42,7 @@ public class Buffer {
     return strings;
   }
 
-  public Bid chooseBidFromBuffer() {
+  public synchronized Bid chooseBidFromBuffer() {
     Bid highestPriorityBid = bids[0];
     int highestPriorityBidIndex = 0;
     for (int i = 1; i < capacity; i++) {
